@@ -55,10 +55,12 @@ FROM Offices;
 /* Calculating low stock */
 
 SELECT productCode, ROUND(SUM(quantityOrdered)*1.0 / (SELECT quantityInStock 
-														FROM products WHERE orderdetails.productCode = products.productCode), 2) 
-														AS low_stock
-													FROM orderdetails GROUP BY productCode 
-													ORDER BY low_stock LIMIT 10; /* Keeping only top 10 low_stock products */
+
+FROM products WHERE orderdetails.productCode = products.productCode), 2) 
+			AS low_stock
+			FROM orderdetails GROUP BY productCode 
+			ORDER BY low_stock LIMIT 10; /* Keeping only top 10 low_stock products */						      
+						      
 /* Calculating Product Performance */
 SELECT productCode, SUM(quantityOrdered*priceEach) 
 					AS product_perf FROM orderdetails GROUP BY productCode 
@@ -71,7 +73,7 @@ WITH
 low_stock_table AS (
 SELECT productCode, ROUND(SUM(quantityOrdered) * 1.0/(SELECT quantityInStock
                                            FROM products WHERE orderdetails.productCode = products.productCode), 2) 
-										   AS low_stock
+						AS low_stock
   FROM orderdetails
  GROUP BY productCode
  ORDER BY low_stock
